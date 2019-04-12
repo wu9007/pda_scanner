@@ -1,6 +1,6 @@
 name: pda_scanner
 description: 这是一个PDA扫码枪（东集小码哥）扫码监听插件。
-version: 0.1.0
+version: 0.1.1
 author: Shusheng <leyansorosame@gmail.com>
 homepage: https://github.com/leyan95/pda_scanner
 

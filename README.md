@@ -5,8 +5,7 @@
 
 A Flutter plugin 🛠 to scanning. Ready for PDA 🚀 
 
-[github]([https://github.com/leyan95/pda_scanner](https://github.com/leyan95/pda_scanner))
-
+![GitHub stars](https://img.shields.io/github/stars/leyan95/pda_scanner.svg?style=social)
 
 ![pda_scanner.gif](https://upload-images.jianshu.io/upload_images/3646846-2b51a756c3cedb47.gif?imageMogr2/auto-orient/strip)
 
