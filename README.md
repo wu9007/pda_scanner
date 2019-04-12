@@ -1,7 +1,6 @@
 # PDA Scanner
   
 [![License][license-image]][license-url] 
-[![Pub](https://img.shields.io/pub/v/qrscan.svg?style=flat-square)](https://pub.dartlang.org/packages/qrscan)
 
 A Flutter plugin 🛠 to scanning. Ready for Android 🚀
 
