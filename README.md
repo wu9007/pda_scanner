@@ -3,7 +3,12 @@
 [![License][license-image]][license-url] 
 [![Pub](https://img.shields.io/pub/v/pda_scanner.svg?style=flat-square)](https://pub.dartlang.org/packages/pda_scanner)
 
-A Flutter plugin 🛠 to scanning. Ready for Android 🚀
+A Flutter plugin 🛠 to scanning. Ready for PDA 🚀 
+
+[github]([https://github.com/leyan95/pda_scanner](https://github.com/leyan95/pda_scanner)
+)
+
+![pda_scanner.gif](https://upload-images.jianshu.io/upload_images/3646846-2b51a756c3cedb47.gif?imageMogr2/auto-orient/strip)
 
 ## Installation
 
@@ -11,7 +16,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.1.0
+ pda_scanner: ^0.0.1
 ```
 
 ## Usage example
