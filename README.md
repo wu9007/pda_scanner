@@ -1,6 +1,7 @@
 # PDA Scanner
   
 [![License][license-image]][license-url] 
+[![Pub](https://img.shields.io/pub/v/pda_scanner.svg?style=flat-square)](https://pub.dartlang.org/packages/pda_scanner)
 
 A Flutter plugin 🛠 to scanning. Ready for Android 🚀
 
