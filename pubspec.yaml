@@ -1,0 +1,21 @@
+name: pda_scanner
+description: 这是一个PDA扫码枪（东集小码哥）扫码监听插件。
+version: 0.0.1
+author: Shusheng <leyansorosame@gmail.com>
+homepage: https://github.com/leyan95/pda_scanner
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  plugin:
+    androidPackage: com.shinow.pda_scanner
+    pluginClass: PdaScannerPlugin
