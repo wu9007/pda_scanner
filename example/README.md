@@ -24,7 +24,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    /// 开启监听
     if (_subscription == null) {
       _subscription = scannerPlugin
           .receiveBroadcastStream()
@@ -35,7 +34,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     super.dispose();
-    /// 取消监听
     if (_subscription != null) {
       _subscription.cancel();
     }

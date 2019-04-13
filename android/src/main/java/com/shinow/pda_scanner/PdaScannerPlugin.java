@@ -50,7 +50,6 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
 
   @Override
   public void onCancel(Object o) {
-//        this.activity.unregisterReceiver(scanReceiver);
     Log.i("PdaScannerPlugin", "PdaScannerPlugin:onCancel");
   }
 }
