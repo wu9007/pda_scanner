@@ -5,7 +5,9 @@
 
 A Flutter plugin 🛠 to scanning. Ready for PDA 🚀 
 
-![pda_scanner.gif](https://upload-images.jianshu.io/upload_images/3646846-2b51a756c3cedb47.gif?imageMogr2/auto-orient/strip)
+[github](https://github.com/leyan95/pda_scanner)
+
+![pda_scanner.gif](https://upload-images.jianshu.io/upload_images/3646846-16ca17b573a765f2.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/320/format/webp)
 
 ## Installation
 
@@ -13,7 +15,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.0.1
+ pda_scanner: ^0.1.4
 ```
 
 ## Usage example
