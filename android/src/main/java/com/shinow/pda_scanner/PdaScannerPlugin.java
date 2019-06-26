@@ -11,45 +11,64 @@ import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.PluginRegistry;
 
 public class PdaScannerPlugin implements EventChannel.StreamHandler {
-  public static final String CHANNEL = "com.shinow.pda_scanner/plugin";
-  private static final String SCAN_ACTION = "com.android.server.scannerservice.broadcast";
+    public static final String CHANNEL = "com.shinow.pda_scanner/plugin";
+    private static final String XM_SCAN_ACTION = "com.android.server.scannerservice.broadcast";
+    private static final String IDATA_SCAN_ACTION = "android.intent.action.SCANRESULT";
+    private static final String YBX_SCAN_ACTION = "android.intent.ACTION_DECODE_DATA";
 
-  private static EventChannel.EventSink eventSink;
+    private static EventChannel.EventSink eventSink;
 
-  private Activity activity;
-  private static final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
-    @Override
-    public void onReceive(Context context, Intent intent) {
-      if (SCAN_ACTION.equals(intent.getAction())) {
-        String code = intent.getStringExtra("scannerdata");
-        eventSink.success(code);
-      } else {
-        Log.i("PdaScannerPlugin", "NoSuchAction");
-      }
+    private Activity activity;
+    private static final BroadcastReceiver scanReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (XM_SCAN_ACTION.equals(intent.getAction())) {
+                String code = intent.getStringExtra("scannerdata");
+                eventSink.success(code);
+            } else if (IDATA_SCAN_ACTION.equals(intent.getAction())) {
+                String code = intent.getStringExtra("value");
+                eventSink.success(code);
+            } else if (YBX_SCAN_ACTION.equals(intent.getAction())) {
+                byte[] codeArray = intent.getByteArrayExtra("barcode");
+                String code = new String(codeArray);
+                eventSink.success(code);
+            } else {
+                Log.i("PdaScannerPlugin", "NoSuchAction");
+            }
+        }
+    };
+
+    private PdaScannerPlugin(Activity activity) {
+        this.activity = activity;
+        IntentFilter xmIntentFilter = new IntentFilter();
+        xmIntentFilter.addAction(XM_SCAN_ACTION);
+        xmIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, xmIntentFilter);
+
+        IntentFilter iDataIntentFilter = new IntentFilter();
+        iDataIntentFilter.addAction(IDATA_SCAN_ACTION);
+        iDataIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, iDataIntentFilter);
+
+        IntentFilter yBoXunIntentFilter = new IntentFilter();
+        yBoXunIntentFilter.addAction(IDATA_SCAN_ACTION);
+        yBoXunIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, yBoXunIntentFilter);
     }
-  };
 
-  private PdaScannerPlugin(Activity activity) {
-    this.activity = activity;
-    IntentFilter intentFilter = new IntentFilter();
-    intentFilter.addAction(SCAN_ACTION);
-    intentFilter.setPriority(Integer.MAX_VALUE);
-    activity.registerReceiver(scanReceiver, intentFilter);
-  }
+    public static void registerWith(PluginRegistry.Registrar registrar) {
+        EventChannel channel = new EventChannel(registrar.messenger(), CHANNEL);
+        PdaScannerPlugin plugin = new PdaScannerPlugin(registrar.activity());
+        channel.setStreamHandler(plugin);
+    }
 
-  public static void registerWith(PluginRegistry.Registrar registrar) {
-    EventChannel channel = new EventChannel(registrar.messenger(), CHANNEL);
-    PdaScannerPlugin plugin = new PdaScannerPlugin(registrar.activity());
-    channel.setStreamHandler(plugin);
-  }
+    @Override
+    public void onListen(Object o, final EventChannel.EventSink eventSink) {
+        PdaScannerPlugin.eventSink = eventSink;
+    }
 
-  @Override
-  public void onListen(Object o, final EventChannel.EventSink eventSink) {
-    PdaScannerPlugin.eventSink = eventSink;
-  }
-
-  @Override
-  public void onCancel(Object o) {
-    Log.i("PdaScannerPlugin", "PdaScannerPlugin:onCancel");
-  }
+    @Override
+    public void onCancel(Object o) {
+        Log.i("PdaScannerPlugin", "PdaScannerPlugin:onCancel");
+    }
 }

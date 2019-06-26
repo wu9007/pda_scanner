@@ -1,6 +1,6 @@
 name: pda_scanner
 description: This is a scanning plug-in for PDA(Dong ji Xiao ma ge) to Listen for scanned events and get results.
-version: 0.1.4
+version: 0.1.5
 author: Shusheng <leyansorosame@gmail.com>
 homepage: https://github.com/leyan95/pda_scanner
 

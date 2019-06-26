@@ -15,7 +15,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.1.4
+ pda_scanner: ^0.1.5
 ```
 
 ## Usage example
