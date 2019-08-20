@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 
-import 'package:flutter/services.dart';
+import 'package:pda_scanner/pda_listener.dart';
+import 'package:pda_scanner/pda_source.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,40 +10,31 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  static const scannerPlugin =
-      const EventChannel('com.shinow.pda_scanner/plugin');
-
-  StreamSubscription _subscription;
-
+class _MyAppState extends PdaListenerState<MyApp> {
   var _code;
 
   @override
   void initState() {
     super.initState();
-    if (_subscription == null) {
-      _subscription = scannerPlugin
-          .receiveBroadcastStream()
-          .listen(_onEvent, onError: _onError);
-    }
   }
 
   @override
   void dispose() {
     super.dispose();
-    if (_subscription != null) {
-      _subscription.cancel();
-    }
+    /// You need to call this method to release resources when you exit the entire application.
+    PdaSource.uninstall();
   }
 
-  void _onEvent(Object event) {
+  @override
+  void onEvent(Object event) {
     setState(() {
       _code = event;
       print("ChannelPage: $event");
     });
   }
 
-  void _onError(Object error) {
+  @override
+  void onError(Object error) {
     setState(() {
       _code = "扫描异常";
       print(error);
