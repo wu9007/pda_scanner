@@ -18,6 +18,16 @@ dependencies:
  pda_scanner: ^0.2.0
 ```
 
+## Supported
+
+-  [x] 小码哥-PDA
+-  [x] IData-PDA
+-  [x] 优博讯-PDA
+
+## Features
+
+-  honeywell pda
+
 ## Usage
 ```dart
 class MyApp extends StatefulWidget {
