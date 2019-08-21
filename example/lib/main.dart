@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:pda_scanner/pda_listener.dart';
 import 'package:pda_scanner/pda_source.dart';
+
+import 'page_alpha.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,12 +11,12 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends PdaListenerState<MyApp> {
-  var _code;
-
+class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    /// You need to initialize it as necessary, when the program starts for the first time.
+    PdaSource.init();
   }
 
   @override
@@ -26,32 +27,9 @@ class _MyAppState extends PdaListenerState<MyApp> {
   }
 
   @override
-  void onEvent(Object event) {
-    setState(() {
-      _code = event;
-      print("ChannelPage: $event");
-    });
-  }
-
-  @override
-  void onError(Object error) {
-    setState(() {
-      _code = "扫描异常";
-      print(error);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Scanning result: $_code\n'),
-        ),
-      ),
+      home: PageAlpha(),
     );
   }
 }

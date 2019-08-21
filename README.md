@@ -15,45 +15,74 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.1.5
+ pda_scanner: ^0.2.0
 ```
 
-## Usage example
+## Usage
 ```dart
-static const scannerPlugin = const EventChannel('com.shinow.pda_scanner/plugin');
-StreamSubscription _subscription;
-var _code;
-
-@override
-void initState() {
-super.initState();
-if (_subscription == null) {
-  _subscription = scannerPlugin
-      .receiveBroadcastStream()
-      .listen(_onEvent, onError: _onError);
-}
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
 }
 
-@override
-void dispose() {
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    /// 程序启动时初始化 PdaSource.
+    PdaSource.init();
+  }
+
+  @override
+  void dispose() {
     super.dispose();
-    if (_subscription != null) {
-      _subscription.cancel();
+    /// 退出应用程序时释放 PdaSource 相关资源.
+    PdaSource.uninstall();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: PageAlpha(),
+    );
   }
 }
 
-void _onEvent(Object event) {
+class PageAlpha extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => PageAlphaState();
+}
+
+class PageAlphaState extends PdaListenerState<PageAlpha> {
+  var _code;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('PageAlpha'),
+      ),
+      body: Column(
+        children: <Widget>[
+          Text('Scanning result: $_code\n'),
+          RaisedButton(
+            child: Text('Got to Beta'),
+            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageBeta())),
+          ),
+        ],
+      ),
+    );
+  }
+
+  /// 监听扫描事件
+  @override
+  void onEvent(Object event) {
+    if (!ModalRoute.of(context).isCurrent) return;
     setState(() {
       _code = event;
       print("ChannelPage: $event");
     });
-}
-
-void _onError(Object error) {
-    setState(() {
-      _code = "扫描异常";
-      print(error);
-    });
+  }
 }
 ```
 

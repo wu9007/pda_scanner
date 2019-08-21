@@ -10,3 +10,5 @@
 ## [0.1.5] - 2019/06/26
 - 支持【IDATA】型号PDA
 - 支持【优博讯】型号PDA
+## [0.2.0] - 2019/08/21
+- 添加抽象类 `PdaListenerState<T extends StatefulWidget>`

@@ -4,13 +4,19 @@ import 'package:flutter/services.dart';
 import 'package:pda_scanner/pda_listener.dart';
 
 class PdaSource {
-  static const scannerPlugin = const EventChannel('com.shinow.pda_scanner/plugin');
-  static StreamSubscription _subscription = scannerPlugin.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+  static const String channelName = 'com.shinow.pda_scanner/plugin';
+  static EventChannel _scannerPlugin;
+  static StreamSubscription _subscription;
 
   static List<PdaListenerState> listeners = [];
 
+  static void init() {
+    if (_scannerPlugin == null) _scannerPlugin = const EventChannel(channelName);
+    if (_subscription == null) _subscription = _scannerPlugin.receiveBroadcastStream().listen(_onEvent, onError: _onError);
+  }
+
   static void registerListener(PdaListenerState listener) {
-    listeners.add(listener);
+    if (!listeners.contains(listener)) listeners.add(listener);
   }
 
   static void _onEvent(Object code) {
@@ -18,7 +24,7 @@ class PdaSource {
   }
 
   static void unRegisterListener(PdaListenerState listener) {
-    listeners.remove(listener);
+    if (listeners.contains(listener)) listeners.remove(listener);
   }
 
   static void _onError(Object error) {
@@ -27,6 +33,7 @@ class PdaSource {
 
   /// You need to call this method to release resources when you exit the entire application.
   static void uninstall() {
+    listeners.clear();
     assert(_subscription != null);
     _subscription.cancel();
   }
