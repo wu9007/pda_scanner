@@ -18,10 +18,7 @@ class PageBetaState extends PdaListenerState<PageBeta> {
       body: Column(
         children: <Widget>[
           Text('Scanning result: $_code\n'),
-          RaisedButton(
-            child: Text('Back to Alhpa'),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageBeta())),
-          ),
+          RaisedButton(child: Text('Back to Alhpa'), onPressed: () => Navigator.of(context).pop()),
         ],
       ),
     );

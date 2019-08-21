@@ -10,6 +10,7 @@ class PdaSource {
 
   static List<PdaListenerState> listeners = [];
 
+  /// You need to initialize it as necessary, when the program starts for the first time.
   static void init() {
     if (_scannerPlugin == null) _scannerPlugin = const EventChannel(channelName);
     if (_subscription == null) _subscription = _scannerPlugin.receiveBroadcastStream().listen(_onEvent, onError: _onError);
