@@ -62,7 +62,6 @@ class PageAlphaState extends PdaListenerState<PageAlpha> {
   /// 监听扫描事件
   @override
   void onEvent(Object event) {
-    if (!ModalRoute.of(context).isCurrent) return;
     setState(() {
       _code = event;
       print("ChannelPage: $event");
@@ -95,7 +94,6 @@ class PageBetaState extends PdaListenerState<PageBeta> {
 
   @override
   void onEvent(Object event) {
-    if (!ModalRoute.of(context).isCurrent) return;
     setState(() {
       _code = event;
       print("ChannelPage: $event");

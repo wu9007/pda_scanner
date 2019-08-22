@@ -26,7 +26,6 @@ class PageBetaState extends PdaListenerState<PageBeta> {
 
   @override
   void onEvent(Object event) {
-    if (!ModalRoute.of(context).isCurrent) return;
     setState(() {
       _code = event;
       print("ChannelPage: $event");

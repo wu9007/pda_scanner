@@ -11,6 +11,11 @@ abstract class PdaListenerState<T extends StatefulWidget> extends State<T> {
     throw new Exception(error);
   }
 
+  void checkRouteAndFireEvent(Object code) {
+    if (!ModalRoute.of(context).isCurrent) return;
+    this.onEvent(code);
+  }
+
   @override
   void initState() {
     super.initState();

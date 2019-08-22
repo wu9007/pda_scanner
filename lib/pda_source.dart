@@ -21,7 +21,7 @@ class PdaSource {
   }
 
   static void _onEvent(Object code) {
-    listeners.forEach((listener) => listener.onEvent(code));
+    listeners.forEach((listener) => listener.checkRouteAndFireEvent(code));
   }
 
   static void unRegisterListener(PdaListenerState listener) {

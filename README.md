@@ -15,7 +15,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.2.1
+ pda_scanner: ^0.2.2
 ```
 
 ## Supported
@@ -36,6 +36,11 @@ PdaSource.init();
 
 /// 退出应用程序时释放 PdaSource 相关资源.
 PdaSource.uninstall();
+
+class PageAlpha extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => PageAlphaState();
+}
 
 /// 继承 PdaListenerState<PageAlpha> 监听扫码事件
 class PageAlphaState extends PdaListenerState<PageAlpha> {
