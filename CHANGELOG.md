@@ -14,3 +14,5 @@
 - 添加抽象类 `PdaListenerState<T extends StatefulWidget>`
 ## [0.2.1] - 2019/08/21
 ## [0.2.2] - 2019/08/22
+## [0.2.3] - 2019/10/25
+- 修复对【Honeywell】的支持
