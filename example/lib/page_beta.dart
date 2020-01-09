@@ -6,7 +6,7 @@ class PageBeta extends StatefulWidget {
   State<StatefulWidget> createState() => PageBetaState();
 }
 
-class PageBetaState extends PdaListenerState<PageBeta> {
+class PageBetaState extends State<PageBeta> with PdaListener<PageBeta> {
   var _code;
 
   @override
@@ -30,5 +30,10 @@ class PageBetaState extends PdaListenerState<PageBeta> {
       _code = event;
       print("ChannelPage: $event");
     });
+  }
+
+  @override
+  void onError(Object error) {
+    // TODO: implement onError
   }
 }
