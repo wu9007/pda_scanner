@@ -8,7 +8,7 @@ class PageAlpha extends StatefulWidget {
   State<StatefulWidget> createState() => PageAlphaState();
 }
 
-class PageAlphaState extends PdaListenerState<PageAlpha> {
+class PageAlphaState extends State<PageAlpha> with PdaListener {
   var _code;
 
   @override
@@ -22,7 +22,8 @@ class PageAlphaState extends PdaListenerState<PageAlpha> {
           Text('Scanning result: $_code\n'),
           RaisedButton(
             child: Text('Got to Beta'),
-            onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => PageBeta())),
+            onPressed: () => Navigator.of(context)
+                .push(MaterialPageRoute(builder: (context) => PageBeta())),
           ),
         ],
       ),
@@ -35,5 +36,10 @@ class PageAlphaState extends PdaListenerState<PageAlpha> {
       _code = event;
       print("ChannelPage: $event");
     });
+  }
+
+  @override
+  void onError(Object error) {
+    // TODO: implement onError
   }
 }

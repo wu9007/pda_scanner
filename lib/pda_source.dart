@@ -8,7 +8,7 @@ class PdaSource {
   static EventChannel _scannerPlugin;
   static StreamSubscription _subscription;
 
-  static List<PdaListenerState> listeners = [];
+  static List<PdaListener> listeners = [];
 
   /// You need to initialize it as necessary, when the program starts for the first time.
   static void init() {
@@ -16,7 +16,7 @@ class PdaSource {
     if (_subscription == null) _subscription = _scannerPlugin.receiveBroadcastStream().listen(_onEvent, onError: _onError);
   }
 
-  static void registerListener(PdaListenerState listener) {
+  static void registerListener(PdaListener listener) {
     if (!listeners.contains(listener)) listeners.add(listener);
   }
 
@@ -24,7 +24,7 @@ class PdaSource {
     listeners.forEach((listener) => listener.checkRouteAndFireEvent(code));
   }
 
-  static void unRegisterListener(PdaListenerState listener) {
+  static void unRegisterListener(PdaListener listener) {
     if (listeners.contains(listener)) listeners.remove(listener);
   }
 
