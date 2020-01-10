@@ -50,7 +50,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         activity.registerReceiver(scanReceiver, iDataIntentFilter);
 
         IntentFilter yBoXunIntentFilter = new IntentFilter();
-        yBoXunIntentFilter.addAction(IDATA_SCAN_ACTION);
+        yBoXunIntentFilter.addAction(YBX_SCAN_ACTION);
         yBoXunIntentFilter.setPriority(Integer.MAX_VALUE);
         activity.registerReceiver(scanReceiver, yBoXunIntentFilter);
 
