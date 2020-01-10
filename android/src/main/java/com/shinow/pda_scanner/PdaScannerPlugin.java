@@ -32,7 +32,10 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
             } else if (YBX_SCAN_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("barcode_string"));
             } else if (PL_SCAN_ACTION.equals(actionName)) {
-                eventSink.success(intent.getStringExtra("barcode"));
+                byte[] barcode = intent.getByteArrayExtra("barocode");
+                int barcodelen = intent.getIntExtra("length", 0);
+                String result = new String(barcode, 0, barcodelen);
+                eventSink.success(result);
             } else if (HONEYWELL_SCAN_ACTION.equals(actionName) || BARCODE_DATA_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("data"));
             } else {
@@ -56,7 +59,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         yBoXunIntentFilter.addAction(YBX_SCAN_ACTION);
         yBoXunIntentFilter.setPriority(Integer.MAX_VALUE);
         activity.registerReceiver(scanReceiver, yBoXunIntentFilter);
-        
+
         IntentFilter pLIntentFilter = new IntentFilter();
         pLIntentFilter.addAction(PL_SCAN_ACTION);
         pLIntentFilter.setPriority(Integer.MAX_VALUE);
