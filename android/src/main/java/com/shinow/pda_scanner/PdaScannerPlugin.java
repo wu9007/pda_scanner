@@ -15,6 +15,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
     private static final String XM_SCAN_ACTION = "com.android.server.scannerservice.broadcast";
     private static final String IDATA_SCAN_ACTION = "android.intent.action.SCANRESULT";
     private static final String YBX_SCAN_ACTION = "android.intent.ACTION_DECODE_DATA";
+    private static final String PL_SCAN_ACTION = "scan.rcv.message";
     private static final String BARCODE_DATA_ACTION = "com.ehsy.warehouse.action.BARCODE_DATA";
     private static final String HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA";
 
@@ -29,7 +30,12 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
             } else if (IDATA_SCAN_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("value"));
             } else if (YBX_SCAN_ACTION.equals(actionName)) {
-                eventSink.success(intent.getStringExtra("barcode"));
+                eventSink.success(intent.getStringExtra("barcode_string"));
+            } else if (PL_SCAN_ACTION.equals(actionName)) {
+                byte[] barcode = intent.getByteArrayExtra("barocode");
+                int barcodelen = intent.getIntExtra("length", 0);
+                String result = new String(barcode, 0, barcodelen);
+                eventSink.success(result);
             } else if (HONEYWELL_SCAN_ACTION.equals(actionName) || BARCODE_DATA_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("data"));
             } else {
@@ -50,9 +56,14 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         activity.registerReceiver(scanReceiver, iDataIntentFilter);
 
         IntentFilter yBoXunIntentFilter = new IntentFilter();
-        yBoXunIntentFilter.addAction(IDATA_SCAN_ACTION);
+        yBoXunIntentFilter.addAction(YBX_SCAN_ACTION);
         yBoXunIntentFilter.setPriority(Integer.MAX_VALUE);
         activity.registerReceiver(scanReceiver, yBoXunIntentFilter);
+
+        IntentFilter pLIntentFilter = new IntentFilter();
+        pLIntentFilter.addAction(PL_SCAN_ACTION);
+        pLIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, pLIntentFilter);
 
         IntentFilter honeyIntentFilter = new IntentFilter();
         honeyIntentFilter.addAction(BARCODE_DATA_ACTION);
