@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pda_scanner/pda_listener.dart';
+import 'package:pda_scanner/pda_listener_mixin.dart';
 
 import 'page_beta.dart';
 
@@ -8,7 +8,7 @@ class PageAlpha extends StatefulWidget {
   State<StatefulWidget> createState() => PageAlphaState();
 }
 
-class PageAlphaState extends State<PageAlpha> with PdaListener {
+class PageAlphaState extends State<PageAlpha> with PdaListenerMixin {
   var _code;
 
   @override

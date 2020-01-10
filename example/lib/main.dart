@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-
-import 'package:pda_scanner/pda_source.dart';
+import 'package:pda_scanner/pda_lifecycle_mixin.dart';
 
 import 'page_alpha.dart';
 
@@ -11,21 +10,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    /// You need to initialize it as necessary, when the program starts for the first time.
-    PdaSource.init();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    /// You need to call this method to release resources when you exit the entire application.
-    PdaSource.uninstall();
-  }
-
+class _MyAppState extends State<MyApp> with PdaLifecycleMixin {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

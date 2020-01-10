@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'pda_source.dart';
 
-/// If you want to listen for scavenging events, you need to extends PdaListenerState<T extends StatefulWidget> instead of State<T extends StatefulWidget>
-mixin PdaListener<T extends StatefulWidget> on State<T>{
+/// If you want to listen for scavenging events, you need to mixin PdaListenerMixin<T extends StatefulWidget> to State<T extends StatefulWidget>
+mixin PdaListenerMixin<T extends StatefulWidget> on State<T>{
   /// You need to override this callback method to listen for scanned events.
   void onEvent(Object code);
 
-  /// If u wanna custom on error callback, u need to override this method.
+  /// If u wanna custom on error callback, u need to implement this method.
   void onError(Object error);
 
   void checkRouteAndFireEvent(Object code) {

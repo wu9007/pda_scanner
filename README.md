@@ -29,21 +29,30 @@ dependencies:
 ```dart
 /// 导入依赖
 import 'package:pda_scanner/pda_source.dart';
-import 'package:pda_scanner/pda_listener.dart';
+import 'package:pda_scanner/pda_listener_mixin.dart';
+import 'package:pda_scanner/pda_lifecycle_mixin.dart';
 
-/// 程序启动时初始化 PdaSource.
+/// 自动管理pda生命周期(自动初始化和自动释放)，使用PdaLifecycleMixin混入app根组件状态。
+class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin {
+  @override
+  Widget build(BuildContext context) {
+    //TODO
+  }
+}
+
+/// 手动初始化 PdaSource.
 PdaSource.init();
 
-/// 退出应用程序时释放 PdaSource 相关资源.
-PdaSource.uninstall();
+/// 手动释放 PdaSource 相关资源.
+PdaSource.dispose();
 
 class PageAlpha extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => PageAlphaState();
 }
 
-/// 继承 PdaListenerState<PageAlpha> 监听扫码事件
-class PageAlphaState extends PdaListenerState<PageAlpha> {
+/// 混入 PdaListenerMixin 监听扫码事件
+class PageAlphaState extends State<PageAlpha> with PdaListenerMixin {
   var _code;
 
   @override
@@ -51,9 +60,15 @@ class PageAlphaState extends PdaListenerState<PageAlpha> {
     return null;
   }
 
-  /// 监听扫描事件
   @override
-  void onEvent(Object code) {}
+  void onEvent(Object event) {
+      // TODO: implement onEvent
+  }
+  
+    @override
+  void onError(Object error) {
+      // TODO: implement onError
+  }
 }
 ```
 
