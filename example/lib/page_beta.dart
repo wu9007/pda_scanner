@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:pda_scanner/pda_listener.dart';
+import 'package:pda_scanner/pda_listener_mixin.dart';
 
 class PageBeta extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => PageBetaState();
 }
 
-class PageBetaState extends State<PageBeta> with PdaListener<PageBeta> {
+class PageBetaState extends State<PageBeta> with PdaListenerMixin<PageBeta> {
   var _code;
 
   @override
