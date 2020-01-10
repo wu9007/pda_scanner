@@ -15,7 +15,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.2.4
+ pda_scanner: ^0.2.5
 ```
 
 ## Supported
@@ -23,7 +23,8 @@ dependencies:
 -  [x] SEUIC(小码哥)-PDA
 -  [x] IData(盈达聚力)-PDA
 -  [x] UROVO(优博讯)-PDA
--  [x] HONEYWELL(霍尼韦尔) PDA
+-  [x] HONEYWELL(霍尼韦尔)-PDA
+-  [x] PL(攀凌)-PDA
 
 ## Usage
 ```dart
@@ -32,18 +33,16 @@ import 'package:pda_scanner/pda_source.dart';
 import 'package:pda_scanner/pda_listener_mixin.dart';
 import 'package:pda_scanner/pda_lifecycle_mixin.dart';
 
-/// 自动管理pda生命周期(自动初始化和自动释放)，使用PdaLifecycleMixin混入app根组件状态。
+/// 第一种方式：自动管理pda生命周期 (自动初始化和自动释放)，使用PdaLifecycleMixin混入app根组件状态。
 class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin {
   @override
   Widget build(BuildContext context) {
-    //TODO
+    // TODO
   }
 }
 
-/// 手动初始化 PdaSource.
+/// 第二种方式：手动管理pda生命周期 (手动始化和自动释放)。
 PdaSource.init();
-
-/// 手动释放 PdaSource 相关资源.
 PdaSource.dispose();
 
 class PageAlpha extends StatefulWidget {
