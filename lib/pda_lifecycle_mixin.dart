@@ -3,8 +3,7 @@ import 'package:pda_scanner/pda_source.dart';
 
 /// Auto manage the lifecycle of Pda plugin(PdaSource).
 /// Mixin to the state of the root widget.
-mixin PdaLifecycleMixin<T extends StatefulWidget> on State<T>{
-
+mixin PdaLifecycleMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     PdaSource.init();
@@ -17,4 +16,3 @@ mixin PdaLifecycleMixin<T extends StatefulWidget> on State<T>{
     super.dispose();
   }
 }
-

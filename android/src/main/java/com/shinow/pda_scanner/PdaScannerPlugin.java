@@ -13,6 +13,7 @@ import io.flutter.plugin.common.PluginRegistry;
 public class PdaScannerPlugin implements EventChannel.StreamHandler {
     private static final String CHANNEL = "com.shinow.pda_scanner/plugin";
     private static final String XM_SCAN_ACTION = "com.android.server.scannerservice.broadcast";
+    private static final String SHINIOW_SCAN_ACTION = "com.android.server.scannerservice.shinow";
     private static final String IDATA_SCAN_ACTION = "android.intent.action.SCANRESULT";
     private static final String YBX_SCAN_ACTION = "android.intent.ACTION_DECODE_DATA";
     private static final String PL_SCAN_ACTION = "scan.rcv.message";
@@ -25,7 +26,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         @Override
         public void onReceive(Context context, Intent intent) {
             String actionName = intent.getAction();
-            if (XM_SCAN_ACTION.equals(actionName)) {
+            if (XM_SCAN_ACTION.equals(actionName) || SHINIOW_SCAN_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("scannerdata"));
             } else if (IDATA_SCAN_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("value"));
@@ -49,6 +50,11 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         xmIntentFilter.addAction(XM_SCAN_ACTION);
         xmIntentFilter.setPriority(Integer.MAX_VALUE);
         activity.registerReceiver(scanReceiver, xmIntentFilter);
+
+        IntentFilter shinowIntentFilter = new IntentFilter();
+        shinowIntentFilter.addAction(SHINIOW_SCAN_ACTION);
+        shinowIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, shinowIntentFilter);
 
         IntentFilter iDataIntentFilter = new IntentFilter();
         iDataIntentFilter.addAction(IDATA_SCAN_ACTION);
