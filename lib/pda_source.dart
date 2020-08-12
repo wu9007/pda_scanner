@@ -14,10 +14,9 @@ class PdaSource {
   static void init() {
     if (_scannerPlugin == null)
       _scannerPlugin = const EventChannel(channelName);
-    if (_subscription == null)
-      _subscription = _scannerPlugin
-          .receiveBroadcastStream()
-          .listen(_onEvent, onError: _onError);
+    _subscription = _scannerPlugin
+        .receiveBroadcastStream()
+        .listen(_onEvent, onError: _onError);
   }
 
   static void registerListener(PdaListenerMixin listener) {

@@ -8,7 +8,7 @@ class PageAlpha extends StatefulWidget {
   State<StatefulWidget> createState() => PageAlphaState();
 }
 
-class PageAlphaState extends State<PageAlpha> with PdaListenerMixin {
+class PageAlphaState extends State<PageAlpha> with PdaListenerMixin<PageAlpha> {
   var _code;
 
   @override

@@ -15,7 +15,7 @@ Add this to your package's pubspec.yaml file:
 
 ```
 dependencies:
- pda_scanner: ^0.2.7
+ pda_scanner: ^0.2.8
 ```
 
 ## Supported
@@ -34,24 +34,15 @@ import 'package:pda_scanner/pda_listener_mixin.dart';
 import 'package:pda_scanner/pda_lifecycle_mixin.dart';
 
 /// 第一种方式：自动管理pda生命周期 (自动初始化和自动释放)，使用PdaLifecycleMixin混入app根组件状态。
-class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin {
+class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin<RootWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO
   }
 }
 
-/// 第二种方式：手动管理pda生命周期 (手动始化和自动释放)。
-PdaSource.init();
-PdaSource.dispose();
-
-class PageAlpha extends StatefulWidget {
-  @override
-  State<StatefulWidget> createState() => PageAlphaState();
-}
-
 /// 混入 PdaListenerMixin 监听扫码事件
-class PageAlphaState extends State<PageAlpha> with PdaListenerMixin {
+class PageAlphaState extends State<PageAlpha> with PdaListenerMixin<PageAlpha> {
   var _code;
 
   @override

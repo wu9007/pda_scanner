@@ -10,7 +10,7 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with PdaLifecycleMixin {
+class _MyAppState extends State<MyApp> with PdaLifecycleMixin<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
