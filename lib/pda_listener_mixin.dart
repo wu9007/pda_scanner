@@ -15,15 +15,23 @@ mixin PdaListenerMixin<T extends StatefulWidget> on State<T> {
     this.onEvent(code);
   }
 
+  void registerPdaListener() {
+    PdaSource.registerListener(this);
+  }
+
+  void unRegisterPdaListener() {
+    PdaSource.unRegisterListener(this);
+  }
+
   @override
   void initState() {
     super.initState();
-    PdaSource.registerListener(this);
+    this.registerPdaListener();
   }
 
   @override
   void dispose() {
     super.dispose();
-    PdaSource.unRegisterListener(this);
+    this.unRegisterPdaListener();
   }
 }
