@@ -6,6 +6,7 @@ homepage: https://github.com/leyan95/pda_scanner
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
+  flutter: ">=1.12.13+hotfix.5 <2.0.0"
 
 dependencies:
   flutter:
@@ -13,5 +14,7 @@ dependencies:
 
 flutter:
   plugin:
-    androidPackage: com.shinow.pda_scanner
-    pluginClass: PdaScannerPlugin
+    platforms:
+      android:
+        package: com.shinow.pda_scanner
+        pluginClass: PdaScannerPlugin
