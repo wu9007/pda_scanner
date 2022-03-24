@@ -41,7 +41,6 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
             } else if (HONEYWELL_SCAN_ACTION.equals(actionName) || BARCODE_DATA_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("data"));
             } else if (NL_SCAN_ACTION.equals(actionName)) {
-                Log.i("新大陆----1111", intent.getStringExtra("SCAN_BARCODE1"));
                 eventSink.success(intent.getStringExtra("SCAN_BARCODE1"));
             } else {
                 Log.i("PdaScannerPlugin", "NoSuchAction");
