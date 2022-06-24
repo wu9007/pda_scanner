@@ -19,6 +19,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
     private static final String PL_SCAN_ACTION = "scan.rcv.message";
     private static final String BARCODE_DATA_ACTION = "com.ehsy.warehouse.action.BARCODE_DATA";
     private static final String HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA";
+    private static final String SEUIC_SCAN_ACTION = "com.android.scanner.service_settings";
 
     private static EventChannel.EventSink eventSink;
 
@@ -26,7 +27,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         @Override
         public void onReceive(Context context, Intent intent) {
             String actionName = intent.getAction();
-            if (XM_SCAN_ACTION.equals(actionName) || SHINIOW_SCAN_ACTION.equals(actionName)) {
+            if (XM_SCAN_ACTION.equals(actionName) || SHINIOW_SCAN_ACTION.equals(actionName) || SEUIC_SCAN_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("scannerdata"));
             } else if (IDATA_SCAN_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("value"));
@@ -80,6 +81,11 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         honeywellIntentFilter.addAction(HONEYWELL_SCAN_ACTION);
         honeywellIntentFilter.setPriority(Integer.MAX_VALUE);
         activity.registerReceiver(scanReceiver, honeywellIntentFilter);
+
+        IntentFilter seuicIntentFilter = new IntentFilter();
+        seuicIntentFilter.addAction(SEUIC_SCAN_ACTION);
+        seuicIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, seuicIntentFilter);
     }
 
     public static void registerWith(PluginRegistry.Registrar registrar) {
