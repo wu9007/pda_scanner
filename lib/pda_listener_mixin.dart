@@ -11,7 +11,8 @@ mixin PdaListenerMixin<T extends StatefulWidget> on State<T> {
   void onError(Object error);
 
   void checkRouteAndFireEvent(Object code) {
-    if (!ModalRoute.of(context).isCurrent) return;
+    var route = ModalRoute.of(context);
+    if (route != null && !route.isCurrent) return;
     this.onEvent(code);
   }
 
