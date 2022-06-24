@@ -20,6 +20,7 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
     private static final String BARCODE_DATA_ACTION = "com.ehsy.warehouse.action.BARCODE_DATA";
     private static final String HONEYWELL_SCAN_ACTION = "com.honeywell.decode.intent.action.EDIT_DATA";
     private static final String SEUIC_SCAN_ACTION = "com.android.scanner.service_settings";
+    private static final String NL_SCAN_ACTION = "nlscan.action.SCANNER_RESULT";
 
     private static EventChannel.EventSink eventSink;
 
@@ -40,6 +41,8 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
                 eventSink.success(result);
             } else if (HONEYWELL_SCAN_ACTION.equals(actionName) || BARCODE_DATA_ACTION.equals(actionName)) {
                 eventSink.success(intent.getStringExtra("data"));
+            } else if (NL_SCAN_ACTION.equals(actionName)) {
+                eventSink.success(intent.getStringExtra("SCAN_BARCODE1"));
             } else {
                 Log.i("PdaScannerPlugin", "NoSuchAction");
             }
@@ -86,6 +89,13 @@ public class PdaScannerPlugin implements EventChannel.StreamHandler {
         seuicIntentFilter.addAction(SEUIC_SCAN_ACTION);
         seuicIntentFilter.setPriority(Integer.MAX_VALUE);
         activity.registerReceiver(scanReceiver, seuicIntentFilter);
+
+        // 新大陆
+        IntentFilter newlandIntentFilter = new IntentFilter();
+        newlandIntentFilter.addAction(NL_SCAN_ACTION);
+        newlandIntentFilter.setPriority(Integer.MAX_VALUE);
+        activity.registerReceiver(scanReceiver, newlandIntentFilter);
+        Log.i("新大陆", "初始化成功");
     }
 
     public static void registerWith(PluginRegistry.Registrar registrar) {

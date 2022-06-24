@@ -5,15 +5,13 @@ import 'package:pda_scanner/pda_listener_mixin.dart';
 
 class PdaSource {
   static const String channelName = 'com.shinow.pda_scanner/plugin';
-  static EventChannel _scannerPlugin;
-  static StreamSubscription _subscription;
+  static EventChannel _scannerPlugin = const EventChannel(channelName);
+  static StreamSubscription? _subscription;
 
   static List<PdaListenerMixin> listeners = [];
 
   /// You need to initialize it as necessary, when the program starts for the first time.
   static void init() {
-    if (_scannerPlugin == null)
-      _scannerPlugin = const EventChannel(channelName);
     _subscription = _scannerPlugin
         .receiveBroadcastStream()
         .listen(_onEvent, onError: _onError);
@@ -31,10 +29,10 @@ class PdaSource {
   static void dispose() {
     listeners.clear();
     assert(_subscription != null);
-    _subscription.cancel();
+    _subscription!.cancel();
   }
 
-  static void _onEvent(Object code) {
+  static void _onEvent(dynamic code) {
     listeners.forEach((listener) => listener.checkRouteAndFireEvent(code));
   }
 
