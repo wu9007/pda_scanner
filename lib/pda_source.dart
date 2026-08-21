@@ -5,38 +5,69 @@ import 'package:pda_scanner/pda_listener_mixin.dart';
 
 class PdaSource {
   static const String channelName = 'com.shinow.pda_scanner/plugin';
-  static EventChannel _scannerPlugin = const EventChannel(channelName);
-  static StreamSubscription? _subscription;
+  static const EventChannel _scannerPlugin = EventChannel(channelName);
+  static StreamSubscription<dynamic>? _subscription;
 
-  static List<PdaListenerMixin> listeners = [];
+  static final List<PdaListenerMixin> listeners = <PdaListenerMixin>[];
 
-  /// You need to initialize it as necessary, when the program starts for the first time.
+  /// Latest raw scan payload, if any.
+  static String? latest;
+
+  static bool get isListening => _subscription != null;
+
+  /// Manufacturers whose broadcast intents are registered on Android.
+  static const List<String> manufacturers = <String>[
+    'SEUIC',
+    'iData',
+    'Urovo',
+    'Honeywell',
+    'Newland',
+    'Panlian',
+    'Zebra DataWedge',
+    'Sunmi',
+    'CipherLab',
+    'Datalogic',
+    'Bluebird',
+    'Speedata',
+  ];
+
+  /// Call once from the root widget (see [PdaLifecycleMixin]).
   static void init() {
-    _subscription = _scannerPlugin
+    _subscription ??= _scannerPlugin
         .receiveBroadcastStream()
         .listen(_onEvent, onError: _onError);
   }
 
   static void registerListener(PdaListenerMixin listener) {
-    if (!listeners.contains(listener)) listeners.add(listener);
+    if (!listeners.contains(listener)) {
+      listeners.add(listener);
+    }
   }
 
   static void unRegisterListener(PdaListenerMixin listener) {
-    if (listeners.contains(listener)) listeners.remove(listener);
+    listeners.remove(listener);
   }
 
-  /// You need to call this method to release resources when you exit the entire application.
+  /// Release the event subscription when the app is disposed.
   static void dispose() {
     listeners.clear();
-    assert(_subscription != null);
-    _subscription!.cancel();
+    _subscription?.cancel();
+    _subscription = null;
+    latest = null;
   }
 
   static void _onEvent(dynamic code) {
-    listeners.forEach((listener) => listener.checkRouteAndFireEvent(code));
+    if (code != null) {
+      latest = code.toString();
+    }
+    for (final PdaListenerMixin listener in List<PdaListenerMixin>.from(listeners)) {
+      listener.checkRouteAndFireEvent(code);
+    }
   }
 
   static void _onError(Object error) {
-    listeners.forEach((listener) => listener.onError(error));
+    for (final PdaListenerMixin listener in List<PdaListenerMixin>.from(listeners)) {
+      listener.onError(error);
+    }
   }
 }

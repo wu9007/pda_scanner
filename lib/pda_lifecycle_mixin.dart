@@ -1,8 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:pda_scanner/pda_source.dart';
 
-/// Auto manage the lifecycle of Pda plugin(PdaSource).
-/// Mixin to the state of the root widget.
+/// Mixin on the root widget [State] to start and stop the PDA event channel.
 mixin PdaLifecycleMixin<T extends StatefulWidget> on State<T> {
   void initPdaLifecycle() {
     PdaSource.init();
@@ -14,13 +13,13 @@ mixin PdaLifecycleMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void initState() {
-    this.initPdaLifecycle();
+    initPdaLifecycle();
     super.initState();
   }
 
   @override
   void dispose() {
-    this.disposePdaLifecycle();
+    disposePdaLifecycle();
     super.dispose();
   }
 }

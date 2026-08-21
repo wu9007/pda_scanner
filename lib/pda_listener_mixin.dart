@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 
 import 'pda_source.dart';
 
-/// If you want to listen for scavenging events, you need to mixin PdaListenerMixin<T extends StatefulWidget> to State<T extends StatefulWidget>
+/// Mixin on a page [State] to receive hardware scan events while the route is current.
 mixin PdaListenerMixin<T extends StatefulWidget> on State<T> {
-  /// You need to override this callback method to listen for scanned events.
   void onEvent(Object code);
 
-  /// If u wanna custom on error callback, u need to implement this method.
   void onError(Object error);
 
-  void checkRouteAndFireEvent(Object code) {
-    var route = ModalRoute.of(context);
-    if (route != null && !route.isCurrent) return;
-    this.onEvent(code);
+  void checkRouteAndFireEvent(Object? code) {
+    if (code == null) {
+      return;
+    }
+    final ModalRoute<dynamic>? route = ModalRoute.of(context);
+    if (route != null && !route.isCurrent) {
+      return;
+    }
+    onEvent(code);
   }
 
   void registerPdaListener() {
@@ -27,12 +30,12 @@ mixin PdaListenerMixin<T extends StatefulWidget> on State<T> {
   @override
   void initState() {
     super.initState();
-    this.registerPdaListener();
+    registerPdaListener();
   }
 
   @override
   void dispose() {
+    unRegisterPdaListener();
     super.dispose();
-    this.unRegisterPdaListener();
   }
 }

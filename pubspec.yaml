@@ -1,14 +1,21 @@
 name: pda_scanner
-description: This is a scanning plug-in for PDA to listen the scanned events and get scanning results.
-version: 0.2.9
-homepage: https://github.com/leyan95/pda_scanner
+description: Flutter plugin that listens to hardware scan-gun broadcasts on industrial PDAs (SEUIC, iData, Urovo, Honeywell, Newland, Zebra, Sunmi, and more).
+version: 0.3.0
+homepage: https://github.com/wu9007/pda_scanner
+repository: https://github.com/wu9007/pda_scanner
+issue_tracker: https://github.com/wu9007/pda_scanner/issues
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=1.12.13+hotfix.5"
+  sdk: ">=3.0.0 <4.0.0"
+  flutter: ">=3.10.0"
 
 dependencies:
   flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
     sdk: flutter
 
 flutter:
