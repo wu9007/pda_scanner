@@ -1,81 +1,110 @@
-# PDA Scanner
-  
-[![License][license-image]][license-url] 
-[![Pub](https://img.shields.io/pub/v/pda_scanner.svg?style=flat-square)](https://pub.dartlang.org/packages/pda_scanner)
+Language: [English](README.md) | [中文简体](README-ZH.md)
 
-A Flutter plugin 🛠 to scanning. Ready for PDA 🚀 
+# pda_scanner
 
-[github](https://github.com/leyan95/pda_scanner)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Pub](https://img.shields.io/pub/v/pda_scanner.svg)](https://pub.dev/packages/pda_scanner)
 
-![pda_scanner.gif](https://upload-images.jianshu.io/upload_images/3646846-16ca17b573a765f2.gif?imageMogr2/auto-orient/strip%7CimageView2/2/w/320/format/webp)
+Flutter plugin that listens to **hardware scan-gun broadcasts** on industrial PDAs.
 
-## Installation
+- Dart 3 / Flutter 3.10+ / Android embedding v2
+- Android 13+ `RECEIVER_EXPORTED` (required for manufacturer scanner intents)
+- Extra-key fallback so a new OEM does not need a plugin release
+- Receivers are unregistered on detach (no leaked listeners)
 
-Add this to your package's pubspec.yaml file:
+Android only. Scan guns that type as a keyboard still work through Flutter text fields; this plugin is for **broadcast intent** mode.
 
-```
+## Install
+
+```yaml
 dependencies:
- pda_scanner: ^0.2.9
+  pda_scanner: ^0.3.0
 ```
 
-## Supported
+`minSdk` **21**.
 
--  [x] SEUIC(小码哥)-PDA
--  [x] IData(盈达聚力)-PDA
--  [x] UROVO(优博讯)-PDA
--  [x] HONEYWELL(霍尼韦尔)-PDA
--  [x] PL(攀凌)-PDA
--  [x] NL(新大陆)-PDA
+## Supported manufacturers
+
+| Brand | Typical action | Typical extra |
+| --- | --- | --- |
+| SEUIC (小码哥) | `com.android.scanner.broadcast` / `com.seuic.scanner.action.SCANNER_RESULT` | `scannerdata` |
+| iData (盈达聚力) | `android.intent.action.SCANRESULT` | `value` |
+| Urovo (优博讯) | `com.android.server.scannerservice.broadcast` | `scannerdata` |
+| Honeywell | `com.honeywell.decode.intent.action.EDIT_DATA` | `data` |
+| Newland (新大陆) | `nlscan.action.SCANNER_RESULT` | `SCAN_BARCODE1` |
+| Panlian (攀凌) | `scan.rcv.message` | `barocode` + `length` |
+| Zebra DataWedge | `com.symbol.datawedge.api.RESULT_ACTION` | `com.symbol.datawedge.data_string` |
+| Sunmi | `com.sunmi.scanner.ACTION_DATA_CODE_RECEIVED` | `data` |
+| CipherLab | `com.cipherlab.barcodebaseapi.PASS_DATA_2_APP` | `Decoder_Data` |
+| Datalogic | `com.datalogic.decodewedge.decode_action` | `com.datalogic.decode.intentwedge.barcode_string` |
+| Bluebird | `kr.co.bluebird.android.bbkey.BARCODE` | `EXTRA_BARCODE_DECODING_DATA` |
+| Speedata | `com.spd.action.SCAN_CALLBACK` | `scannerdata` |
+
+Unknown OEM? The plugin still tries a list of common extras, then the first non-empty string extra. Open an issue with `adb logcat` of the intent if yours is missing.
 
 ## Usage
-```dart
-/// 导入依赖
-import 'package:pda_scanner/pda_source.dart';
-import 'package:pda_scanner/pda_listener_mixin.dart';
-import 'package:pda_scanner/pda_lifecycle_mixin.dart';
 
-/// 自动管理pda生命周期 (自动初始化和自动释放)，使用PdaLifecycleMixin混入app根组件状态。
-/// 如果遇到多混入的情况请手动进行生命周期的初始化 `super.initPdaLifecycle()` 和 释放 `super.disposePdaLifecycle()` 
-class RootWidgetState extends State<RootWidget> with PdaLifecycleMixin<RootWidget> {
+Init once on the **root** widget, listen on each page that should receive scans.
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:pda_scanner/pda_scanner.dart';
+
+class RootApp extends StatefulWidget {
+  const RootApp({super.key});
   @override
-  Widget build(BuildContext context) {
-    // TODO
-  }
+  State<RootApp> createState() => _RootAppState();
 }
 
-/// 混入 PdaListenerMixin 监听扫码事件
-/// 如果遇到多混入的情况请手动进行生命周期的初始化 `super.registerPdaListener()` 和 释放 `super.unRegisterPdaListener()` 
-class PageAlphaState extends State<PageAlpha> with PdaListenerMixin<PageAlpha> {
-  var _code;
+class _RootAppState extends State<RootApp> with PdaLifecycleMixin<RootApp> {
+  @override
+  Widget build(BuildContext context) => const MaterialApp(home: ScanPage());
+}
+
+class ScanPage extends StatefulWidget {
+  const ScanPage({super.key});
+  @override
+  State<ScanPage> createState() => _ScanPageState();
+}
+
+class _ScanPageState extends State<ScanPage> with PdaListenerMixin<ScanPage> {
+  String? code;
 
   @override
   Widget build(BuildContext context) {
-    return null;
+    return Scaffold(
+      body: Center(child: Text(code ?? 'Scan a barcode')),
+    );
   }
 
   @override
-  void onEvent(Object event) {
-      // TODO: implement onEvent
-  }
-  
-    @override
-  void onError(Object error) {
-      // TODO: implement onError
-  }
+  void onEvent(Object event) => setState(() => code = event.toString());
+
+  @override
+  void onError(Object error) {}
 }
 ```
 
-## Contribute
+If the `State` already mixes in another type and you cannot use the mixins as-is, call the methods yourself:
 
-We would ❤️ to see your contribution!
+- Root: `initPdaLifecycle()` / `disposePdaLifecycle()`
+- Page: `registerPdaListener()` / `unRegisterPdaListener()`
+
+`PdaListenerMixin` only fires when the route is current, so a covered page does not steal the scan.
+
+```dart
+PdaSource.latest;       // last payload
+PdaSource.isListening;  // event channel is open
+PdaSource.manufacturers;
+```
+
+## Migrating from 0.2.x
+
+- SDK `>=3.0.0 <4.0.0`
+- Import `package:pda_scanner/pda_scanner.dart` (barrel) or the same three files as before
+- Android embedding **v2 only** — `registerWith` is gone
+- `RaisedButton` in the example is now `ElevatedButton`
 
 ## License
 
-Distributed under the MIT license. See ``LICENSE`` for more information.
-
-## About
-
-Created by Shusheng.
-
-[license-image]: https://img.shields.io/badge/License-MIT-blue.svg
-[license-url]: LICENSE
+MIT

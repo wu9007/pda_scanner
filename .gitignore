@@ -1,7 +1,15 @@
 .DS_Store
+.atom/
 .dart_tool/
-
+.idea/
 .packages
 .pub/
-
+.pub-cache/
 build/
+ios/.generated/
+packages
+pubspec.lock
+*.iml
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
